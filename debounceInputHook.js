@@ -48,7 +48,7 @@ function throttle(fn, delay) {
     if (!flag) {
       fn.apply(this, args);
       flag = true;
-      setTimeout(() => (flag = false), limit);
+      setTimeout(() => (flag = false), delay);
     }
   };
 }
