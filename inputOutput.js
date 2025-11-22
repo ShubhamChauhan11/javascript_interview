@@ -169,3 +169,34 @@ console.log(func(1, 2, 3));
 const arrowFunc = (...args) => args.length;
 console.log(arrowFunc(1, 2, 3));
 //eight
+
+//nine
+console.log([1, 2] + [3, 4]); // "1,23,4"
+console.log([] + {}); // "[object Object]"
+console.log({} + []); //  "[object Object]" (in Node)
+
+//nine
+
+//ten
+let obj = { a: 1 };
+const arr = [obj];
+
+obj.a = 2;
+console.log(arr[0].a);
+//arr[0]&& obj share same reference so value will be 2
+
+obj = { a: 3 };
+
+console.log(arr[0].a);
+//we are reassigning object so a new object is created but the arr[0] stores same old object so value is still 2
+
+//ten
+
+//
+console.log([] == ![]); //true
+//[] is a truthy value so ![]= false
+// [] to string=""
+//again a falsy value
+//so output is true
+
+//
