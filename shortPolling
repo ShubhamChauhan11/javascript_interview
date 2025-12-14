@@ -1,0 +1,22 @@
+const shortPolling=(func, delay)=>{
+    let cancel=false
+    let timer;
+    function poll(){
+        if(cancel){
+            return;
+        }
+        func()
+        timer= setTimeout(poll, delay)
+    }
+    poll();
+    return ()=>{
+        cancel=true;
+    }
+}
+const fun= ()=>{
+    console.log("fun")
+}
+let cancel= shortPolling(fun, 2000)
+setTimeout(()=>{
+    cancel()
+},10000)
