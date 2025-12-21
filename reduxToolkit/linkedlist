@@ -1,0 +1,60 @@
+class Node{
+    constructor(data){
+        this.value=data
+        this.next = null
+    }
+}
+class LinkedList{
+    constructor(){
+        this.head = null
+        
+    }
+    append(val){
+         const node = new Node(val)
+        if(!this.head){
+            this.head=node
+        }else{
+            let current= this.head;
+            while(current.next){
+                current=current.next
+                
+            }
+            current.next = node
+        }
+        
+    }
+    print(){
+        let current= this.head;
+        let result=""
+        while(current){
+            result+= `${current.value}  =>`
+            current=current.next
+        }
+        console.log(result)
+    }
+    reverse(){
+        let prev=null
+        let current= this.head;
+        while(current){
+            let temp= current.next;
+            current.next=prev;
+            prev=current;
+            current=temp;
+            
+        }
+        this.head=prev;
+        
+       
+        
+        
+    }
+}
+const list= new LinkedList()
+list.append(1)
+list.append(2)
+list.append(3)
+list.append(4)
+list.print()
+list.reverse()
+list.print()
+
