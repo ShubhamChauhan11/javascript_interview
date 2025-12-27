@@ -1,0 +1,40 @@
+An API is given which is unstable which either resolves 10ms or 1sec. Need to create a Circuit Breaker which will wait for 300ms and if API is resolved within the timeframe we return the data otherwise we throw an error or retry.
+
+async function retry(fn, retryCount) {
+  try {
+    console.log("called");
+    return await withtimeout(fn(), 3000); // 300ms as per problem
+  } catch (err) {
+   
+
+    if (retryCount > 0) {
+     
+      return retry(fn, retryCount - 1);
+    }
+
+    throw err; 
+  }
+}
+
+function withtimeout(promise, timeout) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error("Time limit exceeded"));
+      }, timeout);
+    })
+  ]);
+}
+
+const fn = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("resolved");
+    }, 3000); // always slower than 300ms
+  });
+};
+
+retry(fn, 2)
+  .then((res) => console.log("ans:", res))
+  .catch((err) => console.log("err:", err.message));
