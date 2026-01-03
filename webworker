@@ -1,0 +1,45 @@
+import { useEffect, useState, useRef } from "react";
+import "./styles.css";
+
+export default function App() {
+  const [number, setNumber] = useState();
+  const [result, setResult] = useState(0);
+  const worker = useRef(null);
+  useEffect(() => {
+    worker.current = new Worker("/worker.js");
+    worker.current.onmessage = (e) => {
+      console.log("e", e);
+      setResult(e.data);
+    };
+    return () => worker.current?.terminate();
+  }, []);
+  const postMessage = (value) => {
+    setNumber(value);
+    if (worker.current) {
+      worker.current.postMessage(value);
+    }
+  };
+  return (
+    <div className="App">
+      <input
+        type="number"
+        onChange={(e) => {
+          postMessage(e.target.value);
+        }}
+      />
+      <h4>Multiple: {result}</h4>
+    </div>
+  );
+}
+
+
+//inside worker.js file
+self.onmessage = (e) => {
+  const data = e.data;
+  console.log("data", data);
+
+  // heavy computation
+  const result = data * 2;
+
+  self.postMessage(result);
+};
